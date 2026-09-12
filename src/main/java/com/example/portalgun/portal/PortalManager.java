@@ -270,7 +270,8 @@ public class PortalManager {
          portal.setBacking(pos, pos.above());
          portal.setOwner(owner.getUUID());
          double x = pos.getX() + 0.5;
-         double y = pos.getY() + 0.5;
+         // Port change: the original used getY() + 0.5, which put wall portals half a block above their two backing blocks.
+         double y = pos.getY();
          double z = pos.getZ() + 0.5;
          double offset = 0.503;
          x += face.getStepX() * offset;
@@ -292,11 +293,12 @@ public class PortalManager {
          if (spawned) {
             try {
                float pitch = type == PortalType.BLUE ? 1.2F : 0.9F;
+               // Port change: play at the shooter; at the portal the 16-block sound range made distant shots silent.
                world.playSound(
                   null,
-                  x,
-                  y,
-                  z,
+                  owner.getX(),
+                  owner.getY(),
+                  owner.getZ(),
                   BuiltInRegistries.SOUND_EVENT.wrapAsHolder(type == PortalType.BLUE ? ModSounds.PORTAL_SHOOT_BLUE : ModSounds.PORTAL_SHOOT_ORANGE),
                   SoundSource.PLAYERS,
                   1.0F,
@@ -354,9 +356,9 @@ public class PortalManager {
                      float pitch = type == PortalType.BLUE ? 1.2F : 0.9F;
                      world.playSound(
                         null,
-                        centerX,
-                        y,
-                        centerZ,
+                        owner.getX(),
+                        owner.getY(),
+                        owner.getZ(),
                         BuiltInRegistries.SOUND_EVENT.wrapAsHolder(type == PortalType.BLUE ? ModSounds.PORTAL_SHOOT_BLUE : ModSounds.PORTAL_SHOOT_ORANGE),
                         SoundSource.PLAYERS,
                         1.0F,
@@ -952,10 +954,8 @@ public class PortalManager {
          normal = new Vec3(0.0, 0.0, 1.0);
       }
 
+      // Port change: the original shifted wall exits down by 0.5 to compensate for the old +0.5 portal height.
       Vec3 base = new Vec3(target.getX(), target.getY(), target.getZ());
-      if (out != Direction.UP && out != Direction.DOWN && !(entity instanceof Projectile)) {
-         base = base.add(0.0, -0.5, 0.0);
-      }
 
       double minPush = 0.35 + Math.max(entity.getBbWidth(), entity.getBbHeight()) * 0.6;
 

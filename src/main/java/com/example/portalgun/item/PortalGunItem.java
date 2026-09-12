@@ -336,7 +336,7 @@ public class PortalGunItem extends Item {
 
    private static Vec3 getWallPortalCenter(BlockPos base, Direction face) {
       double x = base.getX() + 0.5;
-      double y = base.getY() + 0.5;
+      double y = base.getY();
       double z = base.getZ() + 0.5;
       double offset = 0.503;
       x += face.getStepX() * offset;
