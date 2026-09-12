@@ -8,7 +8,8 @@
   "authors": ["ButterBoyRS"],
   "contributors": ["David Stefan Hermann (26.2 port)"],
   "contact": {
-    "homepage": "https://modrinth.com/mod/portalblaster"
+    "homepage": "https://modrinth.com/mod/portalblaster",
+    "sources": "https://github.com/david-stefan-hermann/PortalGunMod-26.2"
   },
   "license": "MIT",
 

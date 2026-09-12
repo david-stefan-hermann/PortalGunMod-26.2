@@ -3,6 +3,7 @@
 An unofficial port of **PortalGunMod** by **ButterBoyRS** to Fabric for Minecraft 26.2.
 
 - Original mod: https://modrinth.com/mod/portalblaster (version 1.2.0, Fabric, Minecraft 1.21.11, MIT License)
+- This port: https://github.com/david-stefan-hermann/PortalGunMod-26.2
 - All gameplay, assets and design are ButterBoyRS's work. This repository only adapts the code to the 26.2 API.
 - If the original author releases a 26.x version, use that instead.
 
