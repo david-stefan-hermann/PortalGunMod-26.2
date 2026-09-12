@@ -18,6 +18,7 @@ Blue and orange portals on walls, floors and ceilings, momentum-preserving trave
 - 26.2 removed `ItemDisplayContext` from special item model renderers. The first-person recoil and shake animations are now selected in `assets/portalgun/items/portal_gun.json` via `minecraft:display_context` cases that pass `first_person`/`left_hand` flags to the renderer.
 
 - Wall portals now sit flush on their two backing blocks (the original placed them half a block higher).
+- Players keep their momentum through portals: the server reads the client-reported movement and syncs the exit velocity back to the client.
 - The portal shoot sound plays at the shooter instead of at the portal, so shots at distant walls are audible.
 
 Mod id stays `portalgun`; never load this jar together with the original.

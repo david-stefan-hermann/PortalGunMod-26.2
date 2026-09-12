@@ -860,6 +860,13 @@ public class PortalManager {
 
    private static Vec3 getTeleportVelocity(Entity entity) {
       Vec3 baseVel = entity.getDeltaMovement();
+      if (entity instanceof ServerPlayer player) {
+         // Port change: a server player's delta movement is ~0 because movement is client-driven; use the
+         // movement the client last reported instead, otherwise players lose all momentum.
+         Vec3 known = player.getKnownMovement();
+         return known.lengthSqr() > baseVel.lengthSqr() ? known : baseVel;
+      }
+
       if (!(entity instanceof Projectile)) {
          return baseVel;
       }
@@ -889,6 +896,9 @@ public class PortalManager {
          }
       } else {
          entity.setDeltaMovement(velocity);
+         // Port change: without this the new velocity is never sent to the client (players stood still after
+         // teleporting because the position packet resets their motion to zero).
+         entity.hurtMarked = true;
       }
    }
 
