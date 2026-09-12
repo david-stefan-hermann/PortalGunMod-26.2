@@ -1,0 +1,139 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "1": "portalgun:block/portal_gun_pedestal",
+    "particle": "portalgun:block/portal_gun_pedestal",
+    "pedestal": "portalgun:block/portal_gun_pedestal"
+  },
+  "elements": [
+    {
+      "name": "black_floor_shadow",
+      "from": [2.1, 0, 2.1],
+      "to": [13.9, 0.45, 13.9],
+      "faces": {
+        "north": {"uv": [0, 0, 4, 4], "texture": "#1"},
+        "east": {"uv": [0, 0, 4, 4], "texture": "#1"},
+        "south": {"uv": [0, 0, 4, 4], "texture": "#1"},
+        "west": {"uv": [0, 0, 4, 4], "texture": "#1"},
+        "up": {"uv": [0, 0, 4, 4], "texture": "#pedestal"},
+        "down": {"uv": [0, 0, 4, 4], "texture": "#pedestal"}
+      }
+    },
+    {
+      "name": "white_square_base",
+      "from": [1.6, 0.45, 1.6],
+      "to": [14.4, 2, 14.4],
+      "faces": {
+        "north": {"uv": [8, 8, 16, 12], "texture": "#1"},
+        "east": {"uv": [8, 8, 16, 12], "texture": "#1"},
+        "south": {"uv": [8, 8, 16, 12], "texture": "#1"},
+        "west": {"uv": [8, 8, 16, 12], "texture": "#1"},
+        "up": {"uv": [0, 8, 8, 16], "texture": "#1"},
+        "down": {"uv": [0, 0, 4, 4], "texture": "#pedestal"}
+      }
+    },
+    {
+      "name": "black_base_inset",
+      "from": [4.15, 2, 4.15],
+      "to": [11.85, 2.55, 11.85],
+      "faces": {
+        "north": {"uv": [4, 0, 8, 4], "texture": "#1"},
+        "east": {"uv": [4, 0, 8, 4], "texture": "#1"},
+        "south": {"uv": [4, 0, 8, 4], "texture": "#1"},
+        "west": {"uv": [4, 0, 8, 4], "texture": "#1"},
+        "up": {"uv": [4, 0, 8, 4], "texture": "#1"},
+        "down": {"uv": [4, 0, 8, 4], "texture": "#1"}
+      }
+    },
+    {
+      "name": "dark_center_post",
+      "from": [6.65, 2.55, 6.65],
+      "to": [9.35, 14.9, 9.35],
+      "faces": {
+        "north": {"uv": [12, 0, 16, 4], "texture": "#1"},
+        "east": {"uv": [12, 0, 16, 4], "texture": "#1"},
+        "south": {"uv": [12, 0, 16, 4], "texture": "#1"},
+        "west": {"uv": [12, 0, 16, 4], "texture": "#1"},
+        "up": {"uv": [12, 0, 16, 4], "texture": "#pedestal"},
+        "down": {"uv": [12, 0, 16, 4], "texture": "#pedestal"}
+      }
+    },
+    {
+      "name": "front_black_post_channel",
+      "from": [7.15, 3.15, 6.28],
+      "to": [8.85, 14.15, 6.72],
+      "faces": {
+        "north": {"uv": [8, 12, 16, 16], "texture": "#1"},
+        "east": {"uv": [8, 12, 16, 16], "texture": "#1"},
+        "south": {"uv": [8, 12, 16, 16], "texture": "#pedestal"},
+        "west": {"uv": [8, 12, 16, 16], "texture": "#1"},
+        "up": {"uv": [8, 12, 16, 16], "texture": "#1"},
+        "down": {"uv": [8, 12, 16, 16], "texture": "#1"}
+      }
+    },
+    {
+      "name": "front_cyan_post_light",
+      "from": [7.72, 4.15, 6.06],
+      "to": [8.28, 13.45, 6.34],
+      "faces": {
+        "north": {"uv": [0, 4, 4, 8], "texture": "#1"},
+        "east": {"uv": [0, 4, 4, 8], "texture": "#1"},
+        "south": {"uv": [0, 4, 4, 8], "texture": "#pedestal"},
+        "west": {"uv": [0, 4, 4, 8], "texture": "#1"},
+        "up": {"uv": [0, 4, 4, 8], "texture": "#1"},
+        "down": {"uv": [0, 4, 4, 8], "texture": "#1"}
+      }
+    },
+    {
+      "name": "white_head_shelf",
+      "from": [4.4, 14.85, 4.95],
+      "to": [11.6, 16.05, 11.05],
+      "faces": {
+        "north": {"uv": [8, 8, 16, 12], "texture": "#1"},
+        "east": {"uv": [8, 8, 16, 12], "texture": "#1"},
+        "south": {"uv": [8, 8, 16, 12], "texture": "#1"},
+        "west": {"uv": [8, 8, 16, 12], "texture": "#1"},
+        "up": {"uv": [8, 0, 12, 4], "texture": "#1"},
+        "down": {"uv": [8, 0, 12, 4], "texture": "#1"}
+      }
+    },
+    {
+      "name": "left_gun_cradle",
+      "from": [5.75, 15.9, 6.9],
+      "to": [6.9, 16.45, 8.85],
+      "faces": {
+        "north": {"uv": [4, 0, 8, 4], "texture": "#1"},
+        "east": {"uv": [4, 0, 8, 4], "texture": "#1"},
+        "south": {"uv": [4, 0, 8, 4], "texture": "#1"},
+        "west": {"uv": [4, 0, 8, 4], "texture": "#1"},
+        "up": {"uv": [4, 0, 8, 4], "texture": "#1"},
+        "down": {"uv": [4, 0, 8, 4], "texture": "#pedestal"}
+      }
+    },
+    {
+      "name": "right_gun_cradle",
+      "from": [9.1, 15.9, 6.9],
+      "to": [10.25, 16.45, 8.85],
+      "faces": {
+        "north": {"uv": [4, 0, 8, 4], "texture": "#1"},
+        "east": {"uv": [4, 0, 8, 4], "texture": "#1"},
+        "south": {"uv": [4, 0, 8, 4], "texture": "#1"},
+        "west": {"uv": [4, 0, 8, 4], "texture": "#1"},
+        "up": {"uv": [4, 0, 8, 4], "texture": "#1"},
+        "down": {"uv": [4, 0, 8, 4], "texture": "#pedestal"}
+      }
+    }
+  ],
+  "display": {
+    "gui": {
+      "rotation": [30, -135, 0],
+      "translation": [0, -1, 0],
+      "scale": [0.72, 0.72, 0.72]
+    },
+    "fixed": {
+      "rotation": [0, -180, 0],
+      "translation": [0, -1, 0],
+      "scale": [0.74, 0.74, 0.74]
+    }
+  }
+}

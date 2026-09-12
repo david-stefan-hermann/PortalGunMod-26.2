@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "portalgun:block/portal_gun_pedestal"
+    },
+    "facing=east": {
+      "model": "portalgun:block/portal_gun_pedestal",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "portalgun:block/portal_gun_pedestal",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "portalgun:block/portal_gun_pedestal",
+      "y": 270
+    }
+  }
+}

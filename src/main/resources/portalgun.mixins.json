@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "package": "com.example.portalgun.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "PersistentProjectileEntityAccessor",
+    "ProjectileEntityMixin"
+  ],
+  "client": [
+    "ClientPlayerInteractionManagerMixin",
+    "HeldItemRendererMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

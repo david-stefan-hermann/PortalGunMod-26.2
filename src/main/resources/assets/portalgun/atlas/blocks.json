@@ -1,0 +1,12 @@
+{
+  "sources": [
+    {
+      "type": "single",
+      "resource": "portalgun:entity/portal_blue"
+    },
+    {
+      "type": "single",
+      "resource": "portalgun:entity/portal_orange"
+    }
+  ]
+}
