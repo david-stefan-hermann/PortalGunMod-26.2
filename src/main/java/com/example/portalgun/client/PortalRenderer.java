@@ -8,7 +8,8 @@ import java.util.Objects;
 import java.util.UUID;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
+import com.example.portalgun.util.PortalShade;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.client.renderer.rendertype.RenderType;
@@ -74,7 +75,8 @@ public class PortalRenderer extends EntityRenderer<PortalEntity, PortalRenderer.
       return super.shouldRender(entity, frustum, x, y, z) || frustum.isVisible(entity.getBoundingBox().inflate(1.25));
    }
 
-   public void updateRenderState(PortalEntity entity, PortalRenderer.PortalRenderState state, float tickDelta) {
+   @Override
+   public void extractRenderState(PortalEntity entity, PortalRenderer.PortalRenderState state, float tickDelta) {
       super.extractRenderState(entity, state, tickDelta);
       state.portalType = entity.getPortalType();
       state.portalEntityId = entity.getId();
@@ -101,12 +103,13 @@ public class PortalRenderer extends EntityRenderer<PortalEntity, PortalRenderer.
       }
    }
 
-   public void render(PortalRenderer.PortalRenderState state, PoseStack matrices, SubmitNodeCollector renderQueue, CameraRenderState camera) {
+   @Override
+   public void submit(PortalRenderer.PortalRenderState state, PoseStack matrices, SubmitNodeCollector renderQueue, CameraRenderState camera) {
       matrices.pushPose();
       Direction face = state.facing == null ? Direction.SOUTH : state.facing;
       state.linkedViewPixels = getStationaryLinkedViewPixels(state);
       RenderType viewLayer = RenderTypes.entityTranslucentEmissive(WHITE_PIXEL);
-      RenderType ringLayer = RenderTypes.entityCutoutNoCull(getRingTexture(state));
+      RenderType ringLayer = RenderTypes.entityCutout(getRingTexture(state));
       int light = state.lightCoords;
       if (face != Direction.UP && face != Direction.DOWN) {
          renderWallLinkedView(state, matrices, renderQueue, viewLayer, face);
@@ -220,7 +223,7 @@ public class PortalRenderer extends EntityRenderer<PortalEntity, PortalRenderer.
       MapColor mapColor = blockState.getMapColor(world, pos);
       int color = mapColor == MapColor.NONE ? world.getClientLeafTintColor(pos) : mapColor.col;
       double distanceShade = Math.max(0.36, 1.0 - hitDistance / 60.0);
-      double sideShade = world.getShade(hit.getDirection(), true);
+      double sideShade = PortalShade.faceShade(hit.getDirection());
       double lightShade = 0.52 + world.getRawBrightness(pos, 0) / 15.0 * 0.32;
       double shade = Math.max(0.3, Math.min(1.0, distanceShade * (sideShade * 0.32 + lightShade)));
       return quantizeColor(applyShade(0xFF000000 | color, shade));

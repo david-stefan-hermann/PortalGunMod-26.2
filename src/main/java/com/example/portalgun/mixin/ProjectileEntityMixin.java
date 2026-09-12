@@ -16,7 +16,7 @@ public abstract class ProjectileEntityMixin {
 
    @Inject(method = "hitTargetOrDeflectSelf", at = @At("HEAD"), cancellable = true)
    private void portalgun$teleportThroughPortalBeforeCollision(HitResult hit, CallbackInfoReturnable<ProjectileDeflection> cir) {
-      Projectile projectile = (Projectile)this;
+      Projectile projectile = (Projectile)(Object)this;
       if (PortalManager.teleportProjectileCollision(projectile, hit)) {
          cir.setReturnValue(ProjectileDeflection.NONE);
       }

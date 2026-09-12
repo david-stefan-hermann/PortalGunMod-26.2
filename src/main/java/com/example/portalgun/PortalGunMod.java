@@ -27,8 +27,7 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents.ServerSt
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents.EndTick;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents.Before;
-import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
-import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents.ModifyEntries;
+import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -77,7 +76,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.permissions.Permission.HasCommandLevel;
 import net.minecraft.world.item.Item.Properties;
 import net.minecraft.world.phys.HitResult.Type;
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.server.MinecraftServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -126,26 +125,26 @@ public class PortalGunMod implements ModInitializer {
          new PortalGunItem(createItemSettings(portalGunId).stacksTo(1).component(DataComponents.SWING_ANIMATION, new SwingAnimation(SwingAnimationType.NONE, 6)))
       );
       Registry.register(BuiltInRegistries.ITEM, pedestalId, new BlockItem(PORTAL_GUN_PEDESTAL, createItemSettings(pedestalId).useBlockDescriptionPrefix()));
-      ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.TOOLS_AND_UTILITIES).register((ModifyEntries)entries -> entries.accept(PORTAL_GUN));
-      ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.FUNCTIONAL_BLOCKS).register((ModifyEntries)entries -> entries.accept(PORTAL_GUN_PEDESTAL));
+      CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.TOOLS_AND_UTILITIES).register(output -> output.accept(PORTAL_GUN));
+      CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.FUNCTIONAL_BLOCKS).register(output -> output.accept(PORTAL_GUN_PEDESTAL));
       PlayerBlockBreakEvents.BEFORE.register((Before)(world, player, pos, state, blockEntity) -> {
          ItemStack stack = player.getMainHandItem();
          return !(stack.getItem() instanceof PortalGunItem);
       });
-      PayloadTypeRegistry.playC2S().register(ClearPortalsPayload.ID, ClearPortalsPayload.CODEC);
-      PayloadTypeRegistry.playC2S().register(ShootBluePayload.ID, ShootBluePayload.CODEC);
-      PayloadTypeRegistry.playC2S().register(ToggleGrabPayload.ID, ToggleGrabPayload.CODEC);
-      PayloadTypeRegistry.playC2S().register(ThrowGrabPayload.ID, ThrowGrabPayload.CODEC);
-      PayloadTypeRegistry.playS2C().register(PortalStatusPayload.ID, PortalStatusPayload.CODEC);
-      PayloadTypeRegistry.playS2C().register(GrabStatusPayload.ID, GrabStatusPayload.CODEC);
-      PayloadTypeRegistry.playS2C().register(PortalViewPayload.ID, PortalViewPayload.CODEC);
+      PayloadTypeRegistry.serverboundPlay().register(ClearPortalsPayload.ID, ClearPortalsPayload.CODEC);
+      PayloadTypeRegistry.serverboundPlay().register(ShootBluePayload.ID, ShootBluePayload.CODEC);
+      PayloadTypeRegistry.serverboundPlay().register(ToggleGrabPayload.ID, ToggleGrabPayload.CODEC);
+      PayloadTypeRegistry.serverboundPlay().register(ThrowGrabPayload.ID, ThrowGrabPayload.CODEC);
+      PayloadTypeRegistry.clientboundPlay().register(PortalStatusPayload.ID, PortalStatusPayload.CODEC);
+      PayloadTypeRegistry.clientboundPlay().register(GrabStatusPayload.ID, GrabStatusPayload.CODEC);
+      PayloadTypeRegistry.clientboundPlay().register(PortalViewPayload.ID, PortalViewPayload.CODEC);
       ServerPlayNetworking.registerGlobalReceiver(ClearPortalsPayload.ID, (payload, context) -> context.server().execute(() -> {
          ServerPlayer player = context.player();
          if (hasPortalGunEquipped(player)) {
             PortalManager.clearForPlayer(context.server(), player.getUUID());
             PortalGunItem.markClearAnimation(player.getMainHandItem());
             PortalGunItem.markClearAnimation(player.getOffhandItem());
-            player.displayClientMessage(Component.literal("Cleared your portals."), true);
+            player.sendOverlayMessage(Component.literal("Cleared your portals."));
          }
       }));
       ServerPlayNetworking.registerGlobalReceiver(ShootBluePayload.ID, (payload, context) -> context.server().execute(() -> {
@@ -224,9 +223,9 @@ public class PortalGunMod implements ModInitializer {
       return new Properties().setId(key);
    }
 
-   private static Properties createBlockSettings(Identifier id) {
+   private static BlockBehaviour.Properties createBlockSettings(Identifier id) {
       ResourceKey<Block> key = ResourceKey.create(Registries.BLOCK, id);
-      return Properties.of().setId(key);
+      return BlockBehaviour.Properties.of().setId(key);
    }
 
    private static boolean hasPortalGunInMainHand(Player player) {
@@ -380,7 +379,7 @@ public class PortalGunMod implements ModInitializer {
       if (server != null) {
          for (ServerLevel world : server.getAllLevels()) {
             for (Entity entity : world.getAllEntities()) {
-               if (entity.getTags().contains("portalgun_grabbed")) {
+               if (entity.entityTags().contains("portalgun_grabbed")) {
                   releaseHeldEntity(entity, false);
                }
             }

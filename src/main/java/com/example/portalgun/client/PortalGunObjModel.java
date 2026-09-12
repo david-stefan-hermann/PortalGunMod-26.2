@@ -21,8 +21,8 @@ import org.joml.Vector3fc;
 final class PortalGunObjModel {
    private static final Identifier MODEL_ID = Identifier.fromNamespaceAndPath("portalgun", "models/item/portal_gun_blue.obj");
    private static final Identifier MATERIAL_TEXTURE = Identifier.fromNamespaceAndPath("portalgun", "textures/item/portalgun_white.png");
-   private static final RenderType OPAQUE_LAYER = RenderTypes.entityCutoutNoCull(MATERIAL_TEXTURE);
-   private static final RenderType LIT_LAYER = RenderTypes.entityCutoutNoCull(MATERIAL_TEXTURE);
+   private static final RenderType OPAQUE_LAYER = RenderTypes.entityCutout(MATERIAL_TEXTURE);
+   private static final RenderType LIT_LAYER = RenderTypes.entityCutout(MATERIAL_TEXTURE);
    private static final float TARGET_LENGTH = 1.25F;
    private static final float REAR_X = 0.125F;
    private static final float ITEM_CENTER = 0.5F;

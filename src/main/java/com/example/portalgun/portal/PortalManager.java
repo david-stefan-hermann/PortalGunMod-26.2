@@ -424,7 +424,7 @@ public class PortalManager {
                   exitYaw = Mth.wrapDegrees(exitYaw);
                }
 
-               Object var24;
+               Entity var24;
                if (entity instanceof ServerPlayer player) {
                   if (sourceWorld != targetWorld) {
                      player.teleportTo(
@@ -541,7 +541,7 @@ public class PortalManager {
             }
          }
 
-         if (world.getDayTime() % 4L == 0L) {
+         if (world.getGameTime() % 4L == 0L) {
             pullNearbyBlocksIntoBlackHole(world, portal, var8, normal);
          }
 
@@ -740,7 +740,7 @@ public class PortalManager {
       MapColor mapColor = blockState.getMapColor(world, pos);
       int color = mapColor == MapColor.NONE ? blockState.getBlock().defaultMapColor().col : mapColor.col;
       double distanceShade = Math.max(0.36, 1.0 - hitDistance / 60.0);
-      double sideShade = world.getShade(hit.getDirection(), true);
+      double sideShade = com.example.portalgun.util.PortalShade.faceShade(hit.getDirection());
       double lightShade = 0.52 + world.getRawBrightness(pos, 0) / 15.0 * 0.32;
       double shade = Math.max(0.3, Math.min(1.0, distanceShade * (sideShade * 0.32 + lightShade)));
       return quantizeColor(applyShade(0xFF000000 | color, shade));

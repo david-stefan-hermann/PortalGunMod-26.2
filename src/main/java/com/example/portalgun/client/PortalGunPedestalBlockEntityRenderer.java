@@ -5,7 +5,7 @@ import com.example.portalgun.block.entity.PortalGunPedestalBlockEntity;
 import net.minecraft.client.renderer.item.ItemModelResolver;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.core.Direction;
 import net.minecraft.world.phys.Vec3;
@@ -21,21 +21,22 @@ public class PortalGunPedestalBlockEntityRenderer implements BlockEntityRenderer
    private final ItemModelResolver itemModelManager;
 
    public PortalGunPedestalBlockEntityRenderer(Context context) {
-      this.itemModelManager = context.comp_4536();
+      this.itemModelManager = context.itemModelResolver();
    }
 
    public PortalGunPedestalBlockEntityRenderState createRenderState() {
       return new PortalGunPedestalBlockEntityRenderState();
    }
 
-   public void updateRenderState(
+   @Override
+   public void extractRenderState(
       PortalGunPedestalBlockEntity pedestal,
       PortalGunPedestalBlockEntityRenderState state,
       float tickProgress,
       Vec3 cameraPos,
       CrumblingOverlay crumblingOverlay
    ) {
-      super.extractRenderState(pedestal, state, tickProgress, cameraPos, crumblingOverlay);
+      BlockEntityRenderer.super.extractRenderState(pedestal, state, tickProgress, cameraPos, crumblingOverlay);
       state.facing = (Direction)pedestal.getBlockState().getValue(PortalGunPedestalBlock.FACING);
       ItemStack stack = pedestal.getPortalGun();
       if (stack.isEmpty()) {
@@ -48,7 +49,8 @@ public class PortalGunPedestalBlockEntityRenderer implements BlockEntityRenderer
       }
    }
 
-   public void render(PortalGunPedestalBlockEntityRenderState state, PoseStack matrices, SubmitNodeCollector queue, CameraRenderState cameraState) {
+   @Override
+   public void submit(PortalGunPedestalBlockEntityRenderState state, PoseStack matrices, SubmitNodeCollector queue, CameraRenderState cameraState) {
       if (state.portalGunRenderState != null) {
          matrices.pushPose();
          matrices.translate(0.5, 1.08, 0.5);

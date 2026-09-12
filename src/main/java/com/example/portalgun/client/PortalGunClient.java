@@ -15,7 +15,7 @@ import com.example.portalgun.util.PortalParticles;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents.EndTick;
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
@@ -32,7 +32,7 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.KeyMapping.Category;
 import com.mojang.blaze3d.platform.InputConstants.Type;
@@ -68,8 +68,8 @@ public class PortalGunClient implements ClientModInitializer {
       });
       EntityRenderers.register(ModEntities.PORTAL, PortalRenderer::new);
       BlockEntityRendererRegistry.register(PortalGunMod.PORTAL_GUN_PEDESTAL_BLOCK_ENTITY, PortalGunPedestalBlockEntityRenderer::new);
-      CLEAR_KEY = KeyBindingHelper.registerKeyBinding(new KeyMapping("key.portalgun.clear_portals", Type.KEYSYM, 86, PORTAL_GUN_CATEGORY));
-      GRAB_KEY = KeyBindingHelper.registerKeyBinding(new KeyMapping("key.portalgun.grab_entity", Type.KEYSYM, 71, PORTAL_GUN_CATEGORY));
+      CLEAR_KEY = KeyMappingHelper.registerKeyMapping(new KeyMapping("key.portalgun.clear_portals", Type.KEYSYM, 86, PORTAL_GUN_CATEGORY));
+      GRAB_KEY = KeyMappingHelper.registerKeyMapping(new KeyMapping("key.portalgun.grab_entity", Type.KEYSYM, 71, PORTAL_GUN_CATEGORY));
       ClientTickEvents.END_CLIENT_TICK
          .register(
             (EndTick)client -> {
@@ -134,17 +134,17 @@ public class PortalGunClient implements ClientModInitializer {
                   while (CLEAR_KEY.consumeClick()) {
                      if (client.player.getMainHandItem().getItem() != PortalGunMod.PORTAL_GUN
                         && client.player.getOffhandItem().getItem() != PortalGunMod.PORTAL_GUN) {
-                        client.player.displayClientMessage(Component.literal("Hold the Portal Gun to clear portals."), true);
+                        client.player.sendOverlayMessage(Component.literal("Hold the Portal Gun to clear portals."));
                      } else {
                         ClientPlayNetworking.send(new ClearPortalsPayload());
                         markClientClear(client);
-                        client.player.displayClientMessage(Component.literal("Clearing portals..."), true);
+                        client.player.sendOverlayMessage(Component.literal("Clearing portals..."));
                      }
                   }
 
                   while (GRAB_KEY.consumeClick()) {
                      if (client.player.getMainHandItem().getItem() != PortalGunMod.PORTAL_GUN) {
-                        client.player.displayClientMessage(Component.literal("Hold the Portal Gun to grab mobs."), true);
+                        client.player.sendOverlayMessage(Component.literal("Hold the Portal Gun to grab mobs."));
                      } else {
                         ClientPlayNetworking.send(new ToggleGrabPayload());
                      }
@@ -183,7 +183,7 @@ public class PortalGunClient implements ClientModInitializer {
       );
    }
 
-   private static void drawPortalBracket(GuiGraphics ctx, float cx, float cy, float side, int color, boolean active) {
+   private static void drawPortalBracket(GuiGraphicsExtractor ctx, float cx, float cy, float side, int color, boolean active) {
       int core = active ? color : withAlpha(color, 95);
       int inner = active ? withAlpha(color, 145) : withAlpha(color, 45);
       int glow = active ? withAlpha(color, 70) : withAlpha(color, 24);
@@ -203,7 +203,7 @@ public class PortalGunClient implements ClientModInitializer {
       }
    }
 
-   private static void drawReticlePixel(GuiGraphics ctx, int x, int y, int color) {
+   private static void drawReticlePixel(GuiGraphicsExtractor ctx, int x, int y, int color) {
       ctx.fill(x, y, x + 1, y + 1, color);
    }
 
@@ -226,9 +226,9 @@ public class PortalGunClient implements ClientModInitializer {
                double z = client.player.getZ() + forward.z * 0.6;
 
                for (int i = 0; i < 8; i++) {
-                  double dx = (client.level.random.nextDouble() - 0.5) * 0.06;
-                  double dy = (client.level.random.nextDouble() - 0.5) * 0.06;
-                  double dz = (client.level.random.nextDouble() - 0.5) * 0.06;
+                  double dx = (client.level.getRandom().nextDouble() - 0.5) * 0.06;
+                  double dy = (client.level.getRandom().nextDouble() - 0.5) * 0.06;
+                  double dz = (client.level.getRandom().nextDouble() - 0.5) * 0.06;
                   client.level.addParticle(dust, x, y, z, dx, dy, dz);
                }
             }
