@@ -25,7 +25,7 @@ public abstract class HeldItemRendererMixin {
    @Shadow
    public abstract void renderItem(LivingEntity var1, ItemStack var2, ItemDisplayContext var3, PoseStack var4, SubmitNodeCollector var5, int var6);
 
-   @Inject(method = "renderArmWithItem", at = @At("HEAD"), cancellable = true)
+   @Inject(method = "submitArmWithItem", at = @At("HEAD"), cancellable = true)
    private void portalgun$renderPortalGunWithoutVanillaHandMotion(
       AbstractClientPlayer player,
       float tickDelta,
