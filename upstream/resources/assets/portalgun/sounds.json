@@ -1,0 +1,47 @@
+{
+  "portal_shoot_blue": {
+    "sounds": [
+      { "name": "portalgun:portal_shoot", "stream": false }
+    ]
+  },
+  "portal_shoot_orange": {
+    "sounds": [
+      { "name": "portalgun:portal_shoot", "stream": false }
+    ]
+  },
+  "portal_gun_activate": {
+    "sounds": [
+      { "name": "portalgun:portal_gun_activate", "stream": false }
+    ]
+  },
+  "teleport": {
+    "sounds": [
+      { "name": "portalgun:teleport", "stream": false }
+    ]
+  },
+  "portal_fail": {
+    "sounds": [
+      { "name": "portalgun:portal_fail", "stream": false }
+    ]
+  },
+  "portal_fizzle": {
+    "sounds": [
+      { "name": "portalgun:portal_fizzle", "stream": false }
+    ]
+  },
+  "hold_loop": {
+    "sounds": [
+      { "name": "portalgun:hold_loop", "stream": false }
+    ]
+  },
+  "physcannon_drop": {
+    "sounds": [
+      { "name": "portalgun:physcannon_drop", "stream": false }
+    ]
+  },
+  "physcannon_tooheavy": {
+    "sounds": [
+      { "name": "portalgun:physcannon_tooheavy", "stream": false }
+    ]
+  }
+}

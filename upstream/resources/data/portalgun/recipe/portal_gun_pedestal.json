@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    " Q ",
+    "RIR",
+    "BBB"
+  ],
+  "key": {
+    "Q": "minecraft:quartz",
+    "R": "minecraft:redstone",
+    "I": "minecraft:iron_ingot",
+    "B": "minecraft:black_concrete"
+  },
+  "result": {
+    "id": "portalgun:portal_gun_pedestal",
+    "count": 1
+  }
+}

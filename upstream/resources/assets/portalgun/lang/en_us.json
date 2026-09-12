@@ -1,0 +1,10 @@
+{
+  "category.portalgun": "Portal Gun",
+  "key.category.portalgun.portalgun": "Portal Gun",
+  "key.portalgun.clear_portals": "Clear Portals",
+  "key.portalgun.grab_entity": "Grab Mob",
+  "entity.portalgun.portal": "Portal",
+  "block.portalgun.portal_gun_pedestal": "Portal Gun Pedestal",
+  "item.portalgun.portal_gun": "Portal Gun",
+  "item.portalgun.portal_gun.desc": "Shoot portals on flat surfaces to create linked gateways."
+}

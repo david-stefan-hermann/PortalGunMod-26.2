@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "DRE",
+    "LLR",
+    "WLD"
+  ],
+  "key": {
+    "D": "minecraft:diamond",
+    "R": "minecraft:redstone",
+    "E": "minecraft:ender_pearl",
+    "L": "minecraft:netherite_scrap",
+    "W": "minecraft:iron_block"
+  },
+  "result": {
+    "id": "portalgun:portal_gun",
+    "count": 1
+  }
+}

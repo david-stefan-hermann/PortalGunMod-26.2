@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "portalgun",
+  "version": "1.2.0",
+
+  "name": "Portal Gun",
+  "description": "Portal Gun mod",
+  "authors": ["ButterBoyRS"],
+
+  "environment": "*",
+
+  "entrypoints": {
+    "main": [
+      "com.example.portalgun.PortalGunMod"
+    ],
+    "client": [
+      "com.example.portalgun.client.PortalGunClient"
+    ]
+  },
+  "mixins": [
+    "portalgun.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.18.3",
+    "fabric-api": ">=0.140.2",
+    "minecraft": "1.21.11",
+    "java": ">=21"
+  }
+}
