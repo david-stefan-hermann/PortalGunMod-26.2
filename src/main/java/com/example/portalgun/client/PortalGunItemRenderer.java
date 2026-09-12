@@ -1,15 +1,15 @@
 package com.example.portalgun.client;
 
 import com.example.portalgun.item.PortalGunItem;
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import java.util.function.Consumer;
 import net.minecraft.client.renderer.special.SpecialModelRenderer;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.world.item.ItemStack;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import net.minecraft.world.item.ItemDisplayContext;
-import net.minecraft.client.renderer.special.SpecialModelRenderer.Unbaked;
 import net.minecraft.client.renderer.special.SpecialModelRenderer.BakingContext;
 import org.joml.Vector3fc;
 
@@ -23,41 +23,49 @@ public final class PortalGunItemRenderer implements SpecialModelRenderer<PortalG
    private static final float CLEAR_SWAY_PIVOT_Z = 0.55F;
    private static final float CLEAR_SWAY_YAW_DEGREES = 6.0F;
    private static final float CLEAR_SWAY_ROLL_DEGREES = 8.0F;
+   // 26.2 no longer passes ItemDisplayContext to special renderers; the item model definition selects
+   // the first-person variants and hands these flags to the baked renderer instead.
+   private final boolean firstPerson;
+   private final boolean leftHand;
 
-   public PortalGunItemRenderer() {
+   public PortalGunItemRenderer(boolean firstPerson, boolean leftHand) {
+      this.firstPerson = firstPerson;
+      this.leftHand = leftHand;
    }
 
-   public void render(
+   @Override
+   public void submit(
       PortalGunItemRenderer.RenderData data,
-      ItemDisplayContext displayContext,
       PoseStack matrices,
       SubmitNodeCollector renderQueue,
       int light,
       int overlay,
       boolean glint,
-      int renderLayer
+      int outlineColor
    ) {
       int firingTicks = data == null ? 0 : data.firingTicks();
       int clearTicks = data == null ? 0 : data.clearTicks();
       boolean grabActive = data != null && data.grabActive();
       matrices.pushPose();
-      applyFirstPersonShotKick(displayContext, matrices, firingTicks);
-      applyFirstPersonClearShake(displayContext, matrices, clearTicks);
+      this.applyFirstPersonShotKick(matrices, firingTicks);
+      this.applyFirstPersonClearShake(matrices, clearTicks);
       PortalGunObjModel.current().render(matrices, renderQueue, light, overlay, firingTicks, grabActive);
       matrices.popPose();
    }
 
+   @Override
    public void getExtents(Consumer<Vector3fc> consumer) {
       PortalGunObjModel.current().collectVertices(consumer);
    }
 
-   public PortalGunItemRenderer.RenderData getData(ItemStack stack) {
+   @Override
+   public PortalGunItemRenderer.RenderData extractArgument(ItemStack stack) {
       return new PortalGunItemRenderer.RenderData(PortalGunItem.getAnimTicks(stack), PortalGunItem.getClearAnimTicks(stack), PortalGunItem.isGrabActive(stack));
    }
 
-   private static void applyFirstPersonShotKick(ItemDisplayContext displayContext, PoseStack matrices, int firingTicks) {
-      if (firingTicks > 0 && displayContext.firstPerson()) {
-         float side = displayContext.leftHand() ? -1.0F : 1.0F;
+   private void applyFirstPersonShotKick(PoseStack matrices, int firingTicks) {
+      if (firingTicks > 0 && this.firstPerson) {
+         float side = this.leftHand ? -1.0F : 1.0F;
          float kick = easeOut(firingTicks / 12.0F);
          matrices.translate(-0.07F * kick, 0.025F * kick, 0.0F);
          matrices.mulPose(Axis.YP.rotationDegrees(side * -3.5F * kick));
@@ -65,9 +73,9 @@ public final class PortalGunItemRenderer implements SpecialModelRenderer<PortalG
       }
    }
 
-   private static void applyFirstPersonClearShake(ItemDisplayContext displayContext, PoseStack matrices, int clearTicks) {
-      if (clearTicks > 0 && displayContext.firstPerson()) {
-         float handSide = displayContext.leftHand() ? -1.0F : 1.0F;
+   private void applyFirstPersonClearShake(PoseStack matrices, int clearTicks) {
+      if (clearTicks > 0 && this.firstPerson) {
+         float handSide = this.leftHand ? -1.0F : 1.0F;
          float time = clearTicks / 14.0F;
          float elapsed = 1.0F - time;
          float fade = time * time;
@@ -87,18 +95,23 @@ public final class PortalGunItemRenderer implements SpecialModelRenderer<PortalG
    }
 
    public record RenderData(int firingTicks, int clearTicks, boolean grabActive) {
-      public RenderData {
-      }
    }
 
-   public record Unbaked() implements Unbaked {
-      public static final PortalGunItemRenderer.Unbaked INSTANCE = new PortalGunItemRenderer.Unbaked();
-      public static final MapCodec<PortalGunItemRenderer.Unbaked> CODEC = MapCodec.unit(INSTANCE);
+   public record Unbaked(boolean firstPerson, boolean leftHand) implements SpecialModelRenderer.Unbaked<PortalGunItemRenderer.RenderData> {
+      public static final MapCodec<PortalGunItemRenderer.Unbaked> CODEC = RecordCodecBuilder.mapCodec(
+         instance -> instance.group(
+               Codec.BOOL.optionalFieldOf("first_person", false).forGetter(PortalGunItemRenderer.Unbaked::firstPerson),
+               Codec.BOOL.optionalFieldOf("left_hand", false).forGetter(PortalGunItemRenderer.Unbaked::leftHand)
+            )
+            .apply(instance, PortalGunItemRenderer.Unbaked::new)
+      );
 
-      public SpecialModelRenderer<?> bake(BakingContext context) {
-         return new PortalGunItemRenderer();
+      @Override
+      public SpecialModelRenderer<PortalGunItemRenderer.RenderData> bake(BakingContext context) {
+         return new PortalGunItemRenderer(this.firstPerson, this.leftHand);
       }
 
+      @Override
       public MapCodec<PortalGunItemRenderer.Unbaked> type() {
          return CODEC;
       }

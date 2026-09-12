@@ -12,6 +12,30 @@
           "type": "minecraft:model",
           "model": "portalgun:item/portal_gun_inventory"
         }
+      },
+      {
+        "when": "firstperson_righthand",
+        "model": {
+          "type": "minecraft:special",
+          "base": "portalgun:item/portal_gun_smooth_base",
+          "model": {
+            "type": "portalgun:portal_gun",
+            "first_person": true,
+            "left_hand": false
+          }
+        }
+      },
+      {
+        "when": "firstperson_lefthand",
+        "model": {
+          "type": "minecraft:special",
+          "base": "portalgun:item/portal_gun_smooth_base",
+          "model": {
+            "type": "portalgun:portal_gun",
+            "first_person": true,
+            "left_hand": true
+          }
+        }
       }
     ],
     "fallback": {
